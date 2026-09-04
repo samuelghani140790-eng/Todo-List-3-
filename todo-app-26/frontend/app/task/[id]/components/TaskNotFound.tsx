@@ -1,17 +1,22 @@
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
-type TaskNotFoundProps = {
+interface TaskNotFoundProps {
   id: string;
-};
+}
 
 export default function TaskNotFound({ id }: TaskNotFoundProps) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-alt px-5 py-12">
-      <div className="w-full max-w-xl rounded-2xl border border-border bg-white p-10 text-center shadow-lg">
-        <p className="text-sm font-semibold uppercase tracking-widest text-danger-70">404</p>
-        <h1 className="mt-3 text-3xl font-bold text-foreground">Tugas Tidak Ditemukan</h1>
-        <p className="mt-3 text-muted">Tugas dengan ID #{id} tidak ada dalam daftar data.</p>
-        <Link href="/" className="mt-7 inline-flex rounded-md bg-primary-70 px-5 py-3 font-semibold text-white transition hover:bg-primary-80">Kembali ke Daftar Tugas</Link>
+    <main className="min-h-screen p-8 bg-gray-100">
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Tugas Tidak Ditemukan</h1>
+        <p className="text-gray-500 mb-6">Tugas dengan ID #{id} tidak ada dalam daftar data.</p>
+        <Link
+          href="/"
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md transition"
+        >
+          Kembali ke Daftar Tugas
+        </Link>
       </div>
     </main>
   );

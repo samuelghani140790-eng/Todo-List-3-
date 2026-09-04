@@ -1,16 +1,19 @@
 import React from 'react';
-import { getTodoDetail } from '@/lib/todo';
+import { getTodoDetail } from '@/lib/todos';
 import TaskNotFound from './components/TaskNotFound';
 import TaskDetailCard from './components/TaskDetailCard';
 
-type DetailPageProps = {
+interface TodoDetailPageProps {
   params: Promise<{
     id: string;
   }>;
-};
+}
 
-export default async function TodoDetailPage({ params }: DetailPageProps) {
+export default async function TodoDetailPage({
+  params,
+}: TodoDetailPageProps) {
   const { id } = await params;
+
   const todo = await getTodoDetail(id);
 
   if (!todo) {

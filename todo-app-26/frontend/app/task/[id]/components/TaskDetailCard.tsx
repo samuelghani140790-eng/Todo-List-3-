@@ -2,11 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Todo } from '@/types/todo';
 
-type TaskDetailCardProps = {
-  todo: Todo;
-};
-
-export default function TaskDetailCard({ todo }: TaskDetailCardProps) {
+export default function TaskDetailCard({ todo }: { todo: Todo }) {
   return (
     <main className="min-h-screen p-8 bg-gray-100">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100">
