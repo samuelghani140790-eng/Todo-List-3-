@@ -13,8 +13,11 @@ type TodoListProps = {
 export default function TodoList({ todos, onToggleTodo, onDeleteTodo }: TodoListProps) {
   if (todos.length === 0) {
     return (
-      <div className="text-center p-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-md">
-        <p>Belum ada tugas. Yay!</p>
+      <div className="rounded-lg border-2 border-dashed border-gray-200 px-4 py-10 text-center">
+        <p className="text-base text-slate-500">Belum ada tugas.</p>
+        <p className="mt-1 text-sm text-gray-400">
+          Tambahkan tugas baru di atas untuk memulai!
+        </p>
       </div>
     );
   }

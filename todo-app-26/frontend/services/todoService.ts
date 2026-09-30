@@ -1,61 +1,55 @@
-import { BASE_URL, ApiError } from './api';
-import { TodoApi, TodoApiResponse } from '@/types/api-todo';
+import { apiClient } from './api';
 
-const ENDPOINT_TODOS = `${BASE_URL}/todos`;
-
-async function apiClient<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T> {
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    throw new ApiError(res.status, `Gagal: ${res.status} ${res.statusText}`);
-  }
-
-  return res.json();
+export interface BackendTodo {
+  id: number;
+  todo: string;
+  completed: boolean;
 }
 
-export async function fetchTodos(): Promise<TodoApi[]> {
-  const data = await fetchTodosWithMeta();
-  return data.todos;
+export interface TodosResponse {
+  success: boolean;
+  message: string;
+  data: BackendTodo[];
 }
 
-export async function fetchTodosWithMeta(): Promise<{ todos: TodoApi[]; total: number }> {
-  const data = await apiClient<{ todos: TodoApi[]; total: number }>(ENDPOINT_TODOS);
-  return data;
+export interface SingleTodoResponse {
+  success: boolean;
+  message: string;
+  data: BackendTodo;
 }
 
-export async function fetchTodoById(id: number): Promise<TodoApi> {
-  const data = await apiClient<TodoApiResponse>(`${ENDPOINT_TODOS}/${id}`);
-  return data.todo;
-}
+export const todoService = {
+  async getTodos(): Promise<BackendTodo[]> {
+    const res = await apiClient<TodosResponse>('/todos?perPage=50');
+    return res.data || [];
+  },
 
-export async function createTodo(title: string): Promise<TodoApi> {
-  const data = await apiClient<TodoApiResponse>(ENDPOINT_TODOS, {
-    method: 'POST',
-    body: JSON.stringify({ todo: title, completed: false }),
-  });
-  return data.todo;
-}
+  async getTodoById(id: number | string): Promise<BackendTodo> {
+    const res = await apiClient<SingleTodoResponse>(`/todos/${id}`);
+    return res.data;
+  },
 
-export async function updateTodo(id: number, todo: Partial<TodoApi>): Promise<TodoApi> {
-  const data = await apiClient<TodoApiResponse>(`${ENDPOINT_TODOS}/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(todo),
-  });
-  return data.todo;
-}
+  async createTodo(payload: string): Promise<BackendTodo> {
+    const res = await apiClient<SingleTodoResponse>('/todos', {
+      method: 'POST',
+      body: JSON.stringify({ task: payload }),
+    });
+    return res.data;
+  },
 
-export async function deleteTodo(id: number): Promise<void> {
-  await apiClient<void>(`${ENDPOINT_TODOS}/${id}`, {
-    method: 'DELETE',
-  });
-}
+  async updateTodo(
+    id: number | string,
+    payload: { task?: string; is_completed?: boolean }
+  ): Promise<void> {
+    await apiClient(`/todos/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async deleteTodo(id: number | string): Promise<void> {
+    await apiClient(`/todos/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};

@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { todoService } from '@/services/todoService';
 import { authService } from '@/services/authService';
-import TaskNotFound from './components/TaskNotFound';
-import TaskDetailCard from './components/TaskDetailCard';
+import TaskNotFound from './TaskNotFound';
+import TaskDetailCard from './TaskDetailCard';
 import { Todo } from '@/types/todo';
 
 export default function TodoDetailPage() {
